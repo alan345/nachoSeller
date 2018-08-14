@@ -9,6 +9,7 @@ import Contact from './nav/page/Contact'
 import FAQ from './nav/page/FAQ'
 import Terms from './nav/page/Terms'
 import UsersPage from './user/list/UsersPage'
+import UserPageMyAccount from './user/single/UserPageMyAccount'
 import UserPage from './user/single/UserPage'
 import ProductsPage from './product/list/ProductsPage'
 import ProductPage from './product/single/ProductPage'
@@ -53,8 +54,8 @@ class SubApp extends React.Component<Props, State> {
                 <Switch>
                   <Route exact path='/' component={Home} />
                   <Route path='/users' component={UsersPage} />
-                  <Route path='/user/myAccount' component={UserPage} />
-                  <Route path='/user/admin/:id' component={UserPage} />
+                  <Route path='/user/myAccount' component={UserPageMyAccount} />
+                  <Route path='/user/admin/:userId' component={UserPage} />
                   <Route path='/category/:urlName' component={CategorieProductPage} />
                   <Route path='/products' component={ProductsPage} />
                   <Route path='/orders' component={OrderList} />

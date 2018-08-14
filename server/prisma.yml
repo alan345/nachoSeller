@@ -1,4 +1,4 @@
-endpoint: http://localhost:4466/nacho/prod
+endpoint: http://localhost:4466/nachoSeller/prod
 datamodel: datamodel.graphql
 
 hooks:

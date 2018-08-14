@@ -8,21 +8,19 @@ import EmailValidated from '../../nav/emailValidation/EmailValidated'
 type State = {}
 
 type Props = {
-  match: {
-    params: {
-      userId: String
-    }
-  }
+  me: any
 }
 
-class UserPage extends React.Component<Props, State> {
+class UserPageMyAccount extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
         <div className='paperOut'>
           <EmailValidated />
           <Paper>
-            <UserDrawer userId={this.props.match.params.userId}/>
+            {this.props.me && (
+              <UserDrawer userId={this.props.me.id}/>
+            )}
           </Paper>
         </div>
       </React.Fragment>
@@ -30,4 +28,4 @@ class UserPage extends React.Component<Props, State> {
   }
 }
 
-export default withContext(UserPage)
+export default withContext(UserPageMyAccount)
