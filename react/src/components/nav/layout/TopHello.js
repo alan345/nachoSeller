@@ -1,54 +1,40 @@
-import React, {Component} from 'react'
-import { AUTH_TOKEN } from '../../../constants/constants'
-import { Link } from 'react-router-dom'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+// @flow
+import React from 'react'
 import MenuAvatar from './MenuAvatar'
-import { withApollo } from 'react-apollo'
+import { Link } from 'react-router-dom'
+import {withContext} from '../../withContext'
+import Button from '@material-ui/core/Button'
+import type { User } from '../../user/User.type'
 
-class TopHello extends Component {
+type State = {}
+
+type Props = {
+  me: User
+}
+
+class TopHello extends React.Component<Props, State> {
   render() {
-    const authToken = localStorage.getItem(AUTH_TOKEN)
-      return (
-        <div>
-        {authToken ? (
-          <div>
-            {this.props.me.me && (
-              <MenuAvatar user={this.props.me.me} nameFile={this.props.me.me.nameFile}/>
-            )}
-          </div>
+    return (
+      <React.Fragment>
+        {(this.props.me) ? (
+          <MenuAvatar user={this.props.me} nameFile={this.props.me.nameFile}/>
         ) : (
-          <div>
-            {this.props.me.me  && (
-              <div>
-              Hi {this.props.me.me.name}!
-              </div>
-            )}
-          </div>
+          <React.Fragment>
+            <Link to='/login'>
+              <Button>
+                Sign in
+              </Button>
+            </Link>
+            <Link to='/signup'>
+              <Button color='primary' variant='contained'>
+                Sign up
+              </Button>
+            </Link>
+          </React.Fragment>
         )}
-        {!authToken && (
-          <Link to='/login' className='ml1 no-underline black'>
-            login
-          </Link>
-        )}
-        </div>
-      )
-    }
+      </React.Fragment>
+    )
   }
+}
 
-  const USER_QUERY = gql`
-    query Me {
-      me {
-        id
-        email
-        role
-        name
-        nameFile
-      }
-    }
-  `
-
-export default compose(
-  graphql(USER_QUERY, {name: 'me'}),
-  withApollo
-)(TopHello)
+export default withContext(TopHello)

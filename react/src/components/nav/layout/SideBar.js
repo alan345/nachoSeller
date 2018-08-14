@@ -1,27 +1,38 @@
-import React, {Component} from 'react'
-import ListSideBar from './ListSideBar'
+// @flow
+import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
-import {SideBarContext} from './SideBarContext'
+import MenuItem from '@material-ui/core/MenuItem'
+import Icon from '@material-ui/core/Icon'
+import {AppContext} from '../../AppContext'
+import MenuList from './MenuList'
+import ImageTemplate from '../ImageTemplate'
 
-class SideBar extends Component {
+type State = {}
+
+type Props = {}
+
+class SideBar extends React.Component<Props, State> {
   render() {
     return (
-      <SideBarContext.Consumer>
+      <AppContext.Consumer>
         {context => (
           <Drawer
             variant={context.state.variant}
             open={context.state.isSideBarOpen}
             onClose={context.toggleDrawer(false)}>
-            <div
-              tabIndex={0}
-              role='button'
-              onClick={context.toggleDrawer(false)}
-              >
-              <ListSideBar isMobile={context.state.isMobile}/>
+            <div onClick={context.toggleDrawer(false)} >
+              <MenuItem>
+                <Icon>arrow_back</Icon>
+                <div className='flex'></div>
+                {context.me && (
+                  <ImageTemplate format={'avatar'} nameFile={context.me.nameFile} />
+                )}
+              </MenuItem>
+              <MenuList onClose={()=>{}}/>
             </div>
           </Drawer>
         )}
-      </SideBarContext.Consumer>
+      </AppContext.Consumer>
     )
   }
 }

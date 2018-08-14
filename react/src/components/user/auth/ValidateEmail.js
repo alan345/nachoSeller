@@ -1,13 +1,21 @@
-import React, { Component } from 'react'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+// @flow
+import React from 'react'
+import { graphql, compose, withApollo } from 'react-apollo'
 import SnackBarCustom from '../../nav/SnackBarCustom'
 import Paper from '@material-ui/core/Paper'
-import { withApollo } from 'react-apollo'
+import { VALIDATE_EMAIL_TOKEN_MUTATION } from './GraphQL'
 
 const queryString = require('query-string')
 
-class ValidateEmail extends Component {
+type State = {
+
+}
+
+type Props = {
+
+}
+
+class ValidateEmail extends React.Component<Props, State> {
   state = {
     email: '',
     validateEmailToken: '',
@@ -27,10 +35,7 @@ class ValidateEmail extends Component {
         <h4 className='mv3'>
           Email Validation
         </h4>
-        <div className='flex flex-column'>
-
-        </div>
-
+        <div className='flex flex-column'></div>
         <SnackBarCustom ref={instance => { this.child = instance }}/>
       </Paper>
       </div>
@@ -46,7 +51,7 @@ class ValidateEmail extends Component {
     .then((result) => {
       const { token, user } = result.data.validateEmail
       this._saveUserData(token, user)
-      messageSnackBar = `${user.name}, your email is now validated.`
+      messageSnackBar = `${user.firstName}, your email is now validated.`
     })
     .catch((e) => { messageSnackBar = e.graphQLErrors[0].message })
     this.child._openSnackBar(messageSnackBar)
@@ -57,19 +62,6 @@ class ValidateEmail extends Component {
     })
   }
 }
-
-const VALIDATE_EMAIL_TOKEN_MUTATION = gql`
-  mutation ValidateEmailMutation($validateEmailToken: String!) {
-    validateEmail(validateEmailToken: $validateEmailToken) {
-      token
-      user {
-        name
-        emailvalidated
-        id
-      }
-    }
-  }
-`
 
 export default compose(
   graphql(VALIDATE_EMAIL_TOKEN_MUTATION, { name: 'validateEmailMutation' }),

@@ -1,0 +1,182 @@
+.titleHeroCateg> span {
+  color: white;
+  font-family: norms,sans-serif;
+} 
+
+.subtitleHeroCateg > span {
+  color:white;
+  font-family: norms,sans-serif;
+}
+
+
+
+@media (min-width: 1920px) {
+  .contentHeroCateg {
+    min-height: 500px;
+    margin-left: 70px;
+    padding-top: 150px;
+  }
+  .titleHeroCateg {
+    padding-right: 40%;
+  }
+  .subtitleHeroCateg {
+    padding-right: 50%;
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .contentHeroCateg {
+    min-height: 500px;
+    margin-left: 50px;
+    padding-top: 120px;
+  }
+  .titleHeroCateg {
+    padding-right: 40%;
+  }
+  .subtitleHeroCateg {
+    padding-right: 50%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .contentHeroCateg {
+    min-height: 300px;
+    margin-left: 50px;
+    padding-top: 90px;
+  }
+  .titleHeroCateg {
+    padding-right: 40%;
+    padding-bottom: 30px
+  }
+  .subtitleHeroCateg {
+    padding-right: 50%;
+    padding-bottom: 20px;
+  }
+}
+
+
+@media (min-width: 960px) and (max-width: 1023px) {
+  .contentHeroCateg {
+    min-height: 270px;
+    margin-left: 50px;
+    padding-top: 50px;
+  }
+  .titleHeroCateg {
+    padding-right: 40%;
+    padding-bottom: 20px
+  } 
+  .subtitleHeroCateg {
+    padding-right: 50%;
+  }
+}
+
+@media (min-width: 840px) and (max-width: 959px) {
+  .contentHeroCateg {
+    min-height: 380px;
+    margin-left: 50px;
+    padding-top: 50px;
+  }
+  .titleHeroCateg {
+    padding-right: 40%;
+    padding-bottom: 20px
+  } 
+  .subtitleHeroCateg {
+    padding-right: 50%;
+  }
+}
+
+
+@media (min-width: 720px) and (max-width: 839px) {
+  .contentHeroCateg {
+    min-height: 320px;
+    margin-left: 40px;
+  }
+
+  .titleHeroCateg {
+    font-size:30px;
+    padding-top:20px;
+    padding-bottom:10px;
+    padding-right: 50%;
+  }
+  .subtitleHeroCateg {
+    padding-right: 50%;
+  }
+}
+
+
+@media (min-width: 600px) and (max-width: 719px) {
+  .contentHeroCateg {
+    min-height: 260px;
+    margin-left: 40px;
+  }
+
+  .titleHeroCateg {
+    font-size:30px;
+    padding-top:40px;
+    padding-bottom:40px;
+    padding-right: 50%;
+  }
+
+  .subtitleHeroCateg {
+    padding-right: 50%;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 599px) {
+  .titleHeroCateg {
+    font-size:25px;
+    padding-top:45px;
+    padding-bottom:30px;
+    padding-right: 40%;
+  }
+  .contentHeroCateg {
+    min-height: 240px;
+    margin-left: 20px;
+  }
+}
+
+
+@media (min-width: 400px) and (max-width: 479px) {
+  .titleHeroCateg {
+    font-size:25px;
+    padding-top:45px;
+    padding-bottom:30px;
+    padding-right: 40%;
+  }
+  .contentHeroCateg {
+    min-height: 200px;
+    margin-left: 20px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 399px) {
+  .contentHeroCateg {
+    min-height: 160px;
+    margin-left: 10px;
+  }
+
+  .titleHeroCateg {
+    font-size:20px;
+    padding-top:20px;
+    padding-bottom:10px;
+    padding-right: 40%;
+  }
+}
+
+@media only screen and (max-width: 359px) {
+  .contentHeroCateg {
+    min-height: 150px;
+    margin-left: 10px;
+  }
+
+  .titleHeroCateg {
+    font-size:20px;
+    padding-top:20px;
+    padding-bottom:20px;
+    padding-right: 40%;
+  }
+}

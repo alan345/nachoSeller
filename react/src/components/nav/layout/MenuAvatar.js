@@ -1,12 +1,21 @@
-import React, {Component} from 'react'
+// @flow
+import React from 'react'
 import {withRouter} from 'react-router'
 import Button from '@material-ui/core/Button'
 import ImageTemplate from '../ImageTemplate'
-import MenuItem from '@material-ui/core/MenuItem'
-import {AUTH_TOKEN} from '../../../constants/constants'
+import MenuList from './MenuList'
 import Menu from '@material-ui/core/Menu'
+import { withApollo, compose } from 'react-apollo'
 
-class MenuAvatar extends Component {
+type State = {
+  anchorEl: any
+}
+
+type Props = {
+  nameFile: string
+}
+
+class MenuAvatar extends React.Component<Props, State> {
   state = {
     anchorEl: null
   }
@@ -15,16 +24,8 @@ class MenuAvatar extends Component {
     this.setState({ anchorEl: event.currentTarget })
   }
 
-  handleClose = (page) => {
+  handleClose = () => {
     this.setState({ anchorEl: null })
-    if (page === 'profile') {
-      this.props.history.push('/user/' + this.props.user.id)
-    }
-    if (page === 'logout') {
-      localStorage.removeItem(AUTH_TOKEN)
-      this.props.history.replace(`/login`)
-    }
-    this.setState({open: false})
   }
 
   render() {
@@ -32,23 +33,24 @@ class MenuAvatar extends Component {
        return (
          <div>
            <Button
-             aria-owns={anchorEl ? 'simple-menu' : null}
-             aria-haspopup="true"
-             onClick={this.handleClick}>
-             <ImageTemplate format={'avatar'} nameFile={this.props.nameFile} />
+            aria-owns={anchorEl ? 'simple-menu' : null}
+            aria-haspopup="true"
+            onClick={this.handleClick}>
+            <ImageTemplate format={'avatar'} nameFile={this.props.nameFile} />
            </Button>
            <Menu
-             id="simple-menu"
-             anchorEl={anchorEl}
-             open={Boolean(anchorEl)}
-             onClose={this.handleClose}
-           >
-            <MenuItem onClick={() => this.handleClose('profile')}>Profile</MenuItem>
-            <MenuItem onClick={() => this.handleClose('logout')}>Logout</MenuItem>
+            id="simple-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={this.handleClose}>
+            <MenuList onClose={this.handleClose}/>
            </Menu>
          </div>
        )
     }
 }
 
-export default withRouter(MenuAvatar)
+export default compose(
+  withRouter,
+  withApollo
+)(MenuAvatar)

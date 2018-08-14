@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+// @flow
+import React from 'react'
 import { AUTH_TOKEN } from '../../../constants/constants'
 import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+import { UPDATE_PASSWORD_MUTATION } from './GraphQL'
 import SnackBarCustom from '../../nav/SnackBarCustom'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
@@ -14,7 +15,15 @@ import IconButton from '@material-ui/core/IconButton'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 
-class ChangePassword extends Component {
+type State = {
+
+}
+
+type Props = {
+
+}
+
+class ChangePassword extends React.Component<Props, State> {
   state = {
     oldPassword: '',
     newPassword: '',
@@ -62,7 +71,11 @@ class ChangePassword extends Component {
     if(fieldNum === 1) this.setState({showPassword1: !this.state.showPassword1})
     if(fieldNum === 2) this.setState({showPassword2: !this.state.showPassword2})
   }
-
+  onFocusField = (field) => {
+    if(field === 'oldPassword') { this.setState({activeStep:0}) }
+    if(field === 'newPassword') { this.setState({activeStep:1}) }
+    if(field === 'newPassword2') { this.setState({activeStep:2}) }
+  }
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN)
     if(!authToken) {
@@ -74,125 +87,116 @@ class ChangePassword extends Component {
     return (
       <div className='paperOut'>
         <Paper className='paperIn'>
-        <h4 className='mv3'>
-          Change Password
-        </h4>
-        <div className='flex flex-column'>
+        <h4>Change Password</h4>
+        <div>
 
-          <LinearProgress variant='buffer'
+          <LinearProgress
+            variant='buffer'
+            classes={{ 'dashedColorPrimary': 'dashedColorPrimaryLinearProgress' }}
             value={this.state.activeStep * 100 / this.state.maxStep }
-            valueBuffer={this.calculateBuffer()}
-               />
+            valueBuffer={this.calculateBuffer()} />
 
                <br/>
                  <div className='tac'>
                    <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 0 ? 'focusField' : 'notFocusField')}>
                      <InputLabel htmlFor='oldPassword'>Your actual password</InputLabel>
-            <Input
-              id='oldPassword'
-              value={this.state.oldPassword}
-              onChange={e => this.setState({ oldPassword: e.target.value })}
-              type={this.state.showPassword0 ? 'text' : 'password'}
-              inputRef={node => this.input0 = node}
-              className={'wrapperAnimate ' + (this.state.activeStep === 0 ? 'focusField' : 'notFocusField')}
-              onKeyPress={this.handleKey}
-              endAdornment={
-                <InputAdornment position='end'>
-                  {this.state.activeStep === 0 && (
-                    <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                      <Icon>navigate_next</Icon>
-                    </Button>
-                  )}
-                </InputAdornment>
-              }
-              startAdornment={
-                <InputAdornment position='start'>
-                  {this.state.activeStep === 0 && (
-                    <IconButton onClick={()=>this.showPassword(0)}>
-                      <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
-                    </IconButton>
-                  )}
-                </InputAdornment>
-              }
-            />
-            </FormControl>
-            <br/><br/>
+                      <Input
+                        id='oldPassword'
+                        value={this.state.oldPassword}
+                        onFocus={() => this.onFocusField('oldPassword')}
+                        onChange={e => this.setState({ oldPassword: e.target.value })}
+                        type={this.state.showPassword0 ? 'text' : 'password'}
+                        inputRef={node => this.input0 = node}
+                        onKeyPress={this.handleKey}
+                        startAdornment={
+                          <InputAdornment position='start'>
+                            {this.state.activeStep === 0 && (
+                              <IconButton onClick={()=>this.showPassword(0)}>
+                                <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
+                              </IconButton>
+                            )}
+                          </InputAdornment>
+                        }
+                      />
+                      </FormControl>
+                      {this.state.activeStep === 0 && (
+                        <Button onClick={this.handleNext} variant='fab' color='primary' mini>
+                          <Icon>navigate_next</Icon>
+                        </Button>
+                      )}
+                      <br/><br/>
             {this.state.activeStep >= 1 && (
-              <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 1 ? 'focusField' : 'notFocusField')}>
-                <InputLabel htmlFor='newPassword'>Choose a safe password</InputLabel>
-            <Input
-              id='newPassword'
-              value={this.state.newPassword}
-              onChange={e => this.setState({ newPassword: e.target.value })}
-              type={this.state.showPassword1 ? 'text' : 'password'}
-              inputRef={node => this.input1 = node}
-              onKeyPress={this.handleKey}
-              startAdornment={
-                <InputAdornment position='start'>
-                  {this.state.activeStep === 1 && (
-                    <IconButton onClick={()=>this.showPassword(1)}>
-                      <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
-                    </IconButton>
-                  )}
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position='end'>
-                  {this.state.activeStep === 1 && (
-                    <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                      <Icon>navigate_next</Icon>
-                    </Button>
-                  )}
-                </InputAdornment>
-            }
-            />
-          </FormControl>
+              <React.Fragment>
+
+                <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 1 ? 'focusField' : 'notFocusField')}>
+                  <InputLabel htmlFor='newPassword'>Choose a safe password</InputLabel>
+                  <Input
+                    id='newPassword'
+                    value={this.state.newPassword}
+                    onFocus={() => this.onFocusField('newPassword')}
+                    onChange={e => this.setState({ newPassword: e.target.value })}
+                    type={this.state.showPassword1 ? 'text' : 'password'}
+                    inputRef={node => this.input1 = node}
+                    onKeyPress={this.handleKey}
+                    startAdornment={
+                      <InputAdornment position='start'>
+                        {this.state.activeStep === 1 && (
+                          <IconButton onClick={()=>this.showPassword(1)}>
+                            <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                {this.state.activeStep === 1 && (
+                  <Button onClick={this.handleNext} variant='fab' color='primary' mini>
+                    <Icon>navigate_next</Icon>
+                  </Button>
+                )}
+              </React.Fragment>
             )}
             <br/><br/>
             {this.state.activeStep >= 2 && (
-              <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 2 ? 'focusField' : 'notFocusField')}>
-                <InputLabel htmlFor='newPassword2'>Choose a safe password</InputLabel>
-            <Input
-              id='newPassword2'
-              value={this.state.newPassword2}
-              onChange={e => this.setState({ newPassword2: e.target.value })}
-              type={this.state.showPassword2 ? 'text' : 'password'}
-              label='Retype your safe password'
-              inputRef={node => this.input2 = node}
-              onKeyPress={this.handleKey}
-              startAdornment={
-                <InputAdornment position='start'>
-                  {this.state.activeStep === 2 && (
-                    <IconButton onClick={()=>this.showPassword(2)}>
-                      <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
-                    </IconButton>
-                  )}
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position='end'>
-                  {this.state.activeStep === 2 && (
-                    <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                      <Icon>done</Icon>
-                    </Button>
-                  )}
-                </InputAdornment>
-
-            }
-            />
-          </FormControl>
+              <React.Fragment>
+                <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 2 ? 'focusField' : 'notFocusField')}>
+                  <InputLabel htmlFor='newPassword2'>Choose a safe password</InputLabel>
+                  <Input
+                    id='newPassword2'
+                    value={this.state.newPassword2}
+                    onFocus={() => this.onFocusField('newPassword2')}
+                    onChange={e => this.setState({ newPassword2: e.target.value })}
+                    type={this.state.showPassword2 ? 'text' : 'password'}
+                    label='Retype your safe password'
+                    inputRef={node => this.input2 = node}
+                    onKeyPress={this.handleKey}
+                    startAdornment={
+                      <InputAdornment position='start'>
+                        {this.state.activeStep === 2 && (
+                          <IconButton onClick={()=>this.showPassword(2)}>
+                            <Icon>{this.state.showPassword0 ? 'visibility_off' : 'visibility'}</Icon>
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                {this.state.activeStep === 2 && (
+                  <Button onClick={this.handleNext} variant='fab' color='primary' mini>
+                    <Icon>done</Icon>
+                  </Button>
+                )}
+            </React.Fragment>
             )}
 
-          </div>
-          <div className='flex mt3'>
             <Button variant='raised' onClick={() => this._confirm()}>
               Ok
             </Button>
+            </div>
 
           </div>
-        </div>
-        <SnackBarCustom ref={instance => { this.child = instance }}/>
-      </Paper>
+          <SnackBarCustom ref={instance => { this.child = instance }}/>
+        </Paper>
       </div>
     )
   }
@@ -237,14 +241,6 @@ class ChangePassword extends Component {
     localStorage.setItem('userToken', JSON.stringify(user))
   }
 }
-
-const UPDATE_PASSWORD_MUTATION = gql`
-  mutation UpdatePasswordMutation($oldPassword: String!, $newPassword: String!) {
-    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
-      id
-    }
-  }
-`
 
 export default compose(
   graphql(UPDATE_PASSWORD_MUTATION, { name: 'updatePasswordMutation' }),

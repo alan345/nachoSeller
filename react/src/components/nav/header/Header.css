@@ -1,0 +1,20 @@
+.flexGrow {
+  flex-grow:1;
+}
+
+.flex {
+  flex:1;
+}
+
+.logo {
+  width: 150px;
+}
+
+.transparent{
+  color: transparent;
+}
+
+.rootHeader {
+  width: calc(100% - 3px)!important;
+  margin-left: 2px;
+}

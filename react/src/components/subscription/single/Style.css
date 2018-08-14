@@ -1,0 +1,12 @@
+.imageSubcription {
+    max-width: 60px;
+}
+.imageSubcriptionMobile {
+    max-width: 40px;
+    margin-left: 10px;
+}
+
+.marginBetweenButtonsTop {
+    height: 2px;
+}
+

@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+// @flow
+import React from 'react'
 import { AUTH_TOKEN } from '../../../constants/constants'
 import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+import { RESET_PASSWORD_MUTATION } from './GraphQL'
 import SnackBarCustom from '../../nav/SnackBarCustom'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
@@ -9,7 +10,15 @@ import TextField from '@material-ui/core/TextField'
 
 const queryString = require('query-string')
 
-class ResetPassword extends Component {
+type State = {
+
+}
+
+type Props = {
+
+}
+
+class ResetPassword extends React.Component<Props, State> {
   state = {
     password: '',
     password2: '',
@@ -89,18 +98,6 @@ class ResetPassword extends Component {
     localStorage.setItem('userToken', JSON.stringify(user))
   }
 }
-
-const RESET_PASSWORD_MUTATION = gql`
-  mutation ResetPasswordMutation($password: String!, $resetPasswordToken: String!) {
-    resetPassword(password: $password, resetPasswordToken: $resetPasswordToken) {
-      token
-      user {
-        name
-        id
-      }
-    }
-  }
-`
 
 export default compose(
   graphql(RESET_PASSWORD_MUTATION, { name: 'resetPasswordMutation' }),

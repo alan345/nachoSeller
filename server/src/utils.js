@@ -15,6 +15,12 @@ function getUserId(ctx) {
   }
 }
 
+async function getActiveSubscriptions (ctx, userId) {
+  return await ctx.db.query.subscriptions(
+    {where: {user: {id: userId}, status_in:['ACTIVE_TRIAL', 'ACTIVE_OFF_CYCLE', 'ACTIVE_REGULAR']}},
+    '{ id status product { id name listPrice} }'
+  )
+}
 
 class AuthError extends Error {
   constructor() {
@@ -26,4 +32,5 @@ module.exports = {
   getUserId,
   AuthError,
   APP_SECRET,
+  getActiveSubscriptions
 }

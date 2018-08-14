@@ -1,8 +1,10 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Context, getUserId, APP_SECRET } = require('../utils')
-var emailGenerator = require('../emailGenerator.js');
+var emailGenerator = require('../emailGenerator.js')
 const crypto = require('crypto')
+var stripe = require('../stripe.js');
+
 
 // resolve the `AuthPayload` type
 const AuthPayload = {
@@ -10,7 +12,6 @@ const AuthPayload = {
     return ctx.db.query.user({ where: { id } }, info)
   }
 }
-
 
 // query the currently logged in user
 async function me (parent, args, ctx, info) {
@@ -21,15 +22,36 @@ async function me (parent, args, ctx, info) {
 // register a new user
 async function signup (parent, args, ctx, info) {
   const password = await bcrypt.hash(args.password, 10)
-
+  const stripe_cus_id = ''
   const role = args.admin ? 'ADMIN' : 'CUSTOMER'
   const resetPasswordToken = crypto.randomBytes(64).toString('hex')
   const validateEmailToken = crypto.randomBytes(64).toString('hex')
-  console.log('validateEmailToken', validateEmailToken)
+  const magicLinkToken = crypto.randomBytes(64).toString('hex')
   const { admin, ...data } = args
 
+  let customer
+  try {
+    customer = await stripe.createUserInStripe(args.email)
+  } catch (e) {
+    console.error(e)
+    throw(e)
+  }
+
   const user = await ctx.db.mutation.createUser({
-    data: { ...data, role, resetPasswordToken, validateEmailToken, password }
+    data: { ...data, role, stripe_cus_id, resetPasswordToken,
+      firstName: args.firstName,
+      lastName: args.lastName,
+      nameFile: '',
+      billingAdress: '',
+      billingCity: '',
+      billingZip: '',
+      billingState: '',
+      billingState: '',
+      birthday: new Date(),
+      validateEmailToken,
+      magicLinkToken,
+      password, stripe_cus_id:
+      customer.id }
   })
 
   emailGenerator.sendWelcomeEmail(user, ctx)
@@ -38,6 +60,8 @@ async function signup (parent, args, ctx, info) {
     user,
   }
 }
+
+
 async function sendLinkValidateEmail (parent, args, ctx, info) {
   const id = getUserId(ctx)
   let userMe = await ctx.db.query.user({ where: { id } })
@@ -121,7 +145,37 @@ async function login (parent, { email, password }, ctx, info) {
     user
   }
 }
-// log in an existing user
+async function magicLinkLogin (parent, { magicLinkToken }, ctx, info) {
+  const user = await ctx.db.query.user({
+    where: {
+      magicLinkToken: magicLinkToken
+    }
+  })
+  if (!user) {
+    throw new Error(`No such user found.`)
+  }
+
+  if (user.magicLinkExpires < new Date().getTime()) {
+    throw new Error(`Link expired`)
+  }
+
+  try {
+    const user = await ctx.db.mutation.updateUser({
+      where: { magicLinkToken: magicLinkToken },
+      data: {
+        magicLinkExpires: new Date().getTime()
+      }
+    })
+  } catch (e) {
+    throw e
+  }
+
+  return {
+    token: jwt.sign({ userId: user.id }, APP_SECRET),
+    user
+  }
+}
+
 async function forgetPassword (parent, { email }, ctx, info) {
   const user = await ctx.db.query.user({ where: { email } })
   if (!user) {
@@ -136,7 +190,29 @@ async function forgetPassword (parent, { email }, ctx, info) {
         resetPasswordToken: uniqueId
       }
     })
-    emailGenerator.sendForgetPassword(uniqueId, email, ctx)
+    emailGenerator.sendForgetPassword(uniqueId, user, ctx)
+  } catch (e) {
+    return e
+  }
+  return user
+}
+
+
+async function magicLink (parent, { email }, ctx, info) {
+  const user = await ctx.db.query.user({ where: { email } })
+  if (!user) {
+    throw new Error(`No such user found for email: ${email}`)
+  }
+  try {
+    let uniqueId = crypto.randomBytes(64).toString('hex')
+    await ctx.db.mutation.updateUser({
+      where: { id: user.id },
+      data: {
+        magicLinkExpires: new Date().getTime() + 1000 * 60 * 60 * 1, // 1 hours
+        magicLinkToken: uniqueId
+      }
+    })
+    emailGenerator.sendMagicLink(uniqueId, user, ctx)
   } catch (e) {
     return e
   }
@@ -146,7 +222,6 @@ async function forgetPassword (parent, { email }, ctx, info) {
 // update the password of an existing user
 async function updatePassword (parent, { oldPassword, newPassword }, ctx, info) {
   let userId = getUserId(ctx)
-  console.log(userId)
   const user = await ctx.db.query.user({ where: { id: userId } })
   const oldPasswordValid = await bcrypt.compare(oldPassword, user.password)
   if (!oldPasswordValid) {
@@ -171,6 +246,8 @@ module.exports = {
   validateEmail,
   resetPassword,
   login,
+  magicLink,
+  magicLinkLogin,
   updatePassword,
   sendLinkValidateEmail,
   forgetPassword,

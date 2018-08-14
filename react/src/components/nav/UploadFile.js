@@ -1,8 +1,18 @@
+// @flow
 import React from 'react'
 import ImageTemplate from './ImageTemplate'
-import { AUTH_TOKEN } from '../../constants/constants'
+import { AUTH_TOKEN, URL_SERVER_MEDIA } from '../../constants/constants'
 
-class UploadFile extends React.Component {
+type State = {
+  imageURL: string,
+  isEditMode: boolean
+}
+
+type Props = {
+
+}
+
+class UploadFile extends React.Component<Props, State> {
   state = {
     isEditMode: true,
     imageURL: '',
@@ -14,7 +24,7 @@ class UploadFile extends React.Component {
   UNSAFE_componentWillReceiveProps(newProps){
     this.setState({ isEditMode: newProps.isEditMode })
   }
-  
+
   UNSAFE_componentWillMount(){
     this.setState({ isEditMode: this.props.isEditMode })
     if(this.props.nameFile) {
@@ -28,7 +38,7 @@ class UploadFile extends React.Component {
     const data = new FormData()
     data.append('file', this.uploadInput.files[0])
 
-    fetch('http://localhost:8000/upload', {
+    fetch(URL_SERVER_MEDIA + '/upload', {
       method: 'POST',
       body: data,
       headers: new Headers({
@@ -48,7 +58,7 @@ class UploadFile extends React.Component {
           {this.state.isEditMode && (
             <form onSubmit={this.handleUploadImage}>
               <input
-                className='f6 link dim br1 ba ph3 pv2 fr mb2 dib black'
+                className='f6 pv2'
                 ref={(ref) => { this.uploadInput = ref }}
                 onChange={this.handleUploadImage}
                 type='file' />

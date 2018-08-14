@@ -1,0 +1,172 @@
+.hero-section {
+  background-size: 100%;
+}
+.subtitleHero {
+  color:#444444;
+  font-family: norms,sans-serif;
+}
+.titleHero {
+  color:#444444;
+  font-family: norms,sans-serif;
+}
+
+.backgroundHero {
+  background-size: 100%!important;
+}
+
+@media (min-width: 1920px) {
+  .contentHero {
+    min-height: 800px;
+    margin-left: 70px;
+    padding-top: 150px;
+  }
+  .titleHero {
+    padding-right: 40%;
+  }
+  .subtitleHero {
+    padding-right: 50%;
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
+  .callToAction {
+    padding-left:150px;
+  }   
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .contentHero {
+    min-height: 600px;
+    margin-left: 50px;
+    padding-top: 120px;
+  }
+  .titleHero {
+    padding-right: 40%;
+  }
+  .subtitleHero {
+    padding-right: 50%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .callToAction {
+    padding-left:150px;
+  }   
+
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .contentHero {
+    min-height: 480px;
+    margin-left: 50px;
+    padding-top: 90px;
+  }
+  .titleHero {
+    padding-right: 40%;
+    padding-bottom: 30px
+  }
+  .subtitleHero {
+    padding-right: 50%;
+    padding-bottom: 20px;
+  }
+  .callToAction {
+    padding-left:150px;
+  }  
+}
+
+
+@media (min-width: 840px) and (max-width: 1023px) {
+  .contentHero {
+    min-height: 390px;
+    margin-left: 50px;
+    padding-top: 50px;
+  }
+  .titleHero {
+    padding-right: 40%;
+    padding-bottom: 20px
+  }
+  .callToAction {
+    padding-left:150px;
+  }  
+  .subtitleHero {
+    padding-right: 50%;
+  }
+}
+
+
+@media (min-width: 720px) and (max-width: 839px) {
+  .contentHero {
+    min-height: 320px;
+    margin-left: 40px;
+  }
+
+  .titleHero {
+    font-size:30px;
+    padding-top:20px;
+    padding-bottom:10px;
+    padding-right: 50%;
+  }
+  .callToAction {
+    padding-left:100px;
+  }
+  .subtitleHero {
+    padding-right: 50%;
+  }
+}
+
+
+@media (min-width: 600px) and (max-width: 719px) {
+  .contentHero {
+    min-height: 320px;
+    margin-left: 40px;
+  }
+
+  .titleHero {
+    font-size:30px;
+    padding-top:40px;
+    padding-bottom:40px;
+    padding-right: 50%;
+  }
+
+  .subtitleHero {
+    padding-right: 50%;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 599px) {
+  .titleHero {
+    font-size:25px;
+    padding-top:45px;
+    padding-bottom:30px;
+    padding-right: 40%;
+  }
+  .contentHero {
+    min-height: 240px;
+    margin-left: 20px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 399px) {
+  .contentHero {
+    min-height: 210px;
+    margin-left: 10px;
+  }
+
+  .titleHero {
+    font-size:20px;
+    padding-top:30px;
+    padding-bottom:55px;
+    padding-right: 40%;
+  }
+}
+
+@media only screen and (max-width: 359px) {
+  .contentHero {
+    min-height: 210px;
+    margin-left: 10px;
+  }
+
+  .titleHero {
+    font-size:20px;
+    padding-top:20px;
+    padding-bottom:20px;
+    padding-right: 40%;
+  }
+}

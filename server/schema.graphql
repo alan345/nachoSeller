@@ -1,30 +1,39 @@
-# import User, Query.usersConnection, Query.user, Mutation.updateUser, Mutation.createUser from "./generated-schema.graphql"
-# import Car, CarCreateInput, CarWhereInput, CarOrderByInput from "./generated-schema.graphql"
-# import Query.car, Mutation.deleteCar, Query.carsConnection from "./generated-schema.graphql"
-# import Subscription.chat from "./generated-schema.graphql"
-# import Mutation.createPost, Post from "./generated-schema.graphql"
-# import Mutation.createChat, Query.chatsConnection, Query.chat from "./generated-schema.graphql"
+# import User, Query.usersConnection, Query.user, Mutation.updateUser from "./generated-schema.graphql"
+# import Product, Query.productsConnection, Query.product, Mutation.updateProduct, Mutation.createProduct, Mutation.deleteProduct  from "./generated-schema.graphql"
+# import Subscription, Query.subscriptionsConnection, Query.subscription, Mutation.updateSubscription, Mutation.deleteSubscription from "./generated-schema.graphql"
+# import Order, Query.ordersConnection, Query.order, Mutation.updateOrder, Mutation.deleteOrder from "./generated-schema.graphql"
+# import CategorieProduct, Query.categorieProducts, Mutation.createCategorieProduct, Mutation.updateCategorieProduct, Mutation.deleteCategorieProduct from "./generated-schema.graphql"
+# import Mutation.updatePositionProduct from "./generated-schema.graphql"
+
+
 
 type Query {
   me: User
-  feed: [Post!]!
-  drafts(orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]!
-  post(id: ID!): Post
+  getUserStripe(userId: String!): UserStripe
+  getUserPricing(userId: String!, forecastSubscriptionToRemove: String, v: Float): UserPricing
+  categorieSingleProducts(urlName: String!): CategorieProduct
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!, nameFile: String!): AuthPayload!
+  cancelSubscription(where: SubscriptionWhereUniqueInput!): Subscription!
+  reallyCancelSubscription(where: SubscriptionWhereUniqueInput!): Subscription!
+  setPendingPaymentSubscription(where: SubscriptionWhereUniqueInput!): Subscription!
+  doNotCancelSubscription(where: SubscriptionWhereUniqueInput!): Subscription!
+  createCard(tokenCardId: String!): UserStripe!
+  deleteCard(stripe_card_id: String!): UserStripe!
+  setDefaultSource(stripe_card_id: String!): UserStripe!
+  signup(email: String!, password: String!, firstName: String!, lastName: String!): AuthPayload!
   resetPassword(password: String!, resetPasswordToken: String!): AuthPayload!
   sendLinkValidateEmail: User!
   validateEmail(validateEmailToken: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
-  deletePost(id: ID!): Post
+  magicLinkLogin(magicLinkToken: String!): AuthPayload!
   deleteUser(id: ID!): User
-  publish(id: ID!): Post
-  createCar(data: CarCreateInput!): Car!
-  updateCar(data: CarUpdateInput!, where: CarWhereUniqueInput!): Car
   updatePassword(oldPassword: String, newPassword: String!): User!
   forgetPassword(email: String!): User!
+  magicLink(email: String!): User!
+  # createSubscription(productId: String!, status: String!) : Subscription!
+  createOrder(productId: String!) : Subscription!
 }
 
 type AuthPayload {

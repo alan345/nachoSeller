@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+// @flow
+import React from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 
-class SnackBarCustom extends Component {
+class SnackBarCustom extends React.Component<Props, State> {
   state = {
     messageSnackBar: '',
     openSnackBar: false

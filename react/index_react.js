@@ -1,0 +1,22 @@
+const express = require('express')
+const path = require('path')
+const app = express()
+
+app.use(express.static(path.join(__dirname, 'build')))
+
+// app.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// })
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+const port = 8080
+app.listen(port,  function () {
+   console.log('Started port: ' + port)
+})

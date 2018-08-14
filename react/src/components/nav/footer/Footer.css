@@ -1,0 +1,21 @@
+.grey {
+  background-color: #253236;
+}
+
+@media only screen and (min-width: 600px) {
+   .contentFooter {
+     padding: 30px 60px 20px 60px;
+   }
+}
+
+@media only screen and (max-width: 601px) {
+   .contentFooter {
+      padding: 20px 20px 10px 10px;
+   }
+}
+
+
+.ulFooter {
+  list-style-type: none;
+  padding-left: 0px;
+}

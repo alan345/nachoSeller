@@ -1,9 +1,19 @@
-import React, {Component} from 'react'
+// @flow
+import React from 'react'
+import Paper from '@material-ui/core/Paper'
 
-class Loading extends Component {
+type State = {}
+
+type Props = {}
+
+class Loading extends React.Component<Props, State> {
     render() {
     return (
-        <div>Loading..</div>
+      <div className='paperOut'>
+        <Paper className='paperIn'>
+          Loading...
+        </Paper>
+      </div>
     )
   }
 }

@@ -1,4 +1,5 @@
 module.exports = {
   userMail: '', // User gmail
-  passMail: '' // pass gmail
+  passMail: '', // pass gmail
+  tokenSecret: ''
 }

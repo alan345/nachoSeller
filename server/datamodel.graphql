@@ -1,46 +1,150 @@
-
-
 enum Role {
   ADMIN
   CUSTOMER
 }
-
-type Post {
-  id: ID! @unique
-  isPublished: Boolean! @default(value: "false")
-  title: String!
-  text: String!
-  nameFile: String!
-  author: User
-  cars: [Car!]!
-}
-type Chat {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  message: String!
-  author: User
-}
-
-
-type Car {
-  id: ID! @unique
-  name: String!
-}
-
 
 type User {
   id: ID! @unique
   email: String! @unique
   emailvalidated: Boolean! @default(value: false)
   validateEmailToken: String! @unique
+  magicLinkExpires: Float
+  magicLinkToken: String! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
   password: String!
   nameFile: String!
   resetPasswordToken: String! @unique
   resetPasswordExpires: Float
-  name: String!
-  posts: [Post!]!
+  lastName: String!
+  firstName: String!
   role: Role! @default(value: "CUSTOMER")
+  subscriptions: [Subscription!]!
+  orders: [Order!]!
+  stripe_cus_id: String!
+  gender: String! @default(value: "male")
+  billingAdress: String!
+  billingCity: String!
+  billingZip: String!
+  billingState: String!
+  billingCountry: String! @default(value: "United States")
+  birthday: DateTime!
+  language: String @default(value: "en")
+}
+
+type Product {
+  id: ID! @unique
+  urlName: String! @unique
+  listPrice: Float!
+  myListPrice: Float
+  myDiscount: Float
+  myGlobalDiscount: Float
+  subscribed: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  nameFile: String!
+  nameFileBanner: String
+  name: String!
+  description: String!
+  cancellationTerms: String!
+  signupLink: String!
+  loginLink: String!
+  shortDescription: String!
+  subscriptions: [Subscription!]!
+  trialPeriod: Float!
+  positionProducts: [PositionProduct!]!
+}
+
+type CategorieProduct {
+  id: ID! @unique
+  urlName: String! @unique
+  name: String!
+  description: String
+  orderByInt: Int
+  positionProducts: [PositionProduct!]!
+  nameFile: String!
+  nameFileMobile: String!
+}
+
+type PositionProduct {
+  id: ID! @unique
+  categorieProduct: CategorieProduct!
+  product: Product!
+  orderByInt: Int!
+  orderByHomeInt: Int!
+  isFeatured: Boolean!
+}
+
+
+type Subscription {
+  id: ID! @unique
+  smallId: Float! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  trialPeriod: Float!
+  startAt: DateTime
+  endAt: DateTime
+  status: statusSubscription! @default(value: "PENDING_PAYMENT")
+  user: User!
+  product: Product!
+  orders: [Order!]!
+  dateCancellation: DateTime
+}
+
+enum statusSubscription {
+  ACTIVE_TRIAL
+  ACTIVE_OFF_CYCLE
+  ACTIVE_REGULAR
+  ACTIVE_UNTIL_END_BILLING
+  PENDING_SIGNUP
+  PENDING_PAYMENT
+  CANCELLED
+  CANCELLED_BY_ADMIN
+}
+
+type Order {
+  id: ID! @unique
+  smallId: Float! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  products: [Product!]!
+  price: Float!
+  type: String!
+  startAt: DateTime!
+  endAt: DateTime!
+  chargeStripeId: String!
+  isOrderPaid: Boolean!
+  subscriptions: [Subscription!]!
+}
+
+type UserStripe {
+  id: ID! @unique
+  object: String
+  account_balance: Float
+  created: Float
+  currency: String
+  email: String
+  default_source: String
+  sources: SourcesStripe
+}
+
+type UserPricing {
+  myDiscount: Float
+  sumSubscriptions: Float
+  monthlyCost: Float
+}
+type SourcesStripe {
+  object: String
+  data: [DataSourceStripe!]!
+}
+type DataSourceStripe {
+  id: ID! @unique
+  object: String
+  exp_month: Float
+  exp_year: Float
+  last4: String
+  brand: String
+  country: String
+  funding: String
 }

@@ -1,10 +1,8 @@
-
 const { Query } = require('./Query')
 const { Mutation } = require('./Mutation')
-const { Subscription } = require('./Subscription')
+var cronPaiement = require('../cron/cronPaiement.js')
 
 module.exports = {
-  Subscription,
   Query,
   Mutation
 }
