@@ -30,7 +30,7 @@ class Header extends React.Component<Props, State> {
             )}
             <Link to='/'>
               <Button>
-                <img src='/logo/NN_horiz.png' className='logo' alt='logo' />
+                <img src='/logo/NN_vert_reversed.png' className='logo' alt='logo' />
               </Button>
             </Link>
             <div className='flex'></div>

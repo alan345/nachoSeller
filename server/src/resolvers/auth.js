@@ -29,13 +29,13 @@ async function signup (parent, args, ctx, info) {
   const magicLinkToken = crypto.randomBytes(64).toString('hex')
   const { admin, ...data } = args
 
-  let customer
-  try {
-    customer = await stripe.createUserInStripe(args.email)
-  } catch (e) {
-    console.error(e)
-    throw(e)
-  }
+  // let customer
+  // try {
+  //   customer = await stripe.createUserInStripe(args.email)
+  // } catch (e) {
+  //   console.error(e)
+  //   throw(e)
+  // }
 
   const user = await ctx.db.mutation.createUser({
     data: { ...data, role, stripe_cus_id, resetPasswordToken,
@@ -50,8 +50,9 @@ async function signup (parent, args, ctx, info) {
       birthday: new Date(),
       validateEmailToken,
       magicLinkToken,
-      password, stripe_cus_id:
-      customer.id }
+      password, 
+      stripe_cus_id: '' 
+    }
   })
 
   emailGenerator.sendWelcomeEmail(user, ctx)

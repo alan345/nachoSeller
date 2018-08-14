@@ -274,13 +274,14 @@ class Signup extends React.Component<Props, State> {
   _saveUserData = async (token, user) => {
     localStorage.setItem(AUTH_TOKEN, token)
     localStorage.setItem('userToken', JSON.stringify(user))
-    try {
-      await this.props.refetchMe()
-      this.props.history.push(`/`)
-      this.props.openSnackBar('Sign In successful!')
-    } catch (e) {
-      console.log(e)   
-    }   
+    window.location.reload()
+    // try {
+    //   await this.props.refetchMe()
+    //   this.props.history.push(`/`)
+    //   this.props.openSnackBar('Sign In successful!')
+    // } catch (e) {
+    //   console.log(e)   
+    // }   
   }
 }
 

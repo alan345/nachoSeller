@@ -17,4 +17,5 @@
 .rootHeader {
   width: calc(100% - 3px)!important;
   margin-left: 2px;
+  background-color: #E43982!important;
 }
