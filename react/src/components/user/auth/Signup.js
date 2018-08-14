@@ -175,7 +175,8 @@ class Signup extends React.Component<Props, State> {
           <Paper className="paperIn">
             <h1>THANKS YOU!</h1>
             <h4>You can refresh page!</h4>
-            <Button onClick={() => window.parent.location.reload()}>
+            
+            <Button onClick={() => window.location.reload()}>
               Refresh Page
             </Button>
           </Paper>
@@ -304,7 +305,8 @@ class Signup extends React.Component<Props, State> {
               {this.state.activeStep >= 3 && (
                 <React.Fragment>
 
-                  Request is sent to NachoNacho via POST API to check if token is correct, berfore create user.
+                  Request will be sent to NachoNacho via POST API to check if token is correct, berfore create user.
+                  <br />
                   <Password
                     handleNext={this.handleNext.bind(this)}
                     activeStep={this.state.isPasswordActiveStep}
