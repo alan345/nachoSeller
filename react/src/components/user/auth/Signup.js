@@ -12,24 +12,24 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
-import {withContext} from '../../withContext'
+import { withContext } from '../../withContext'
 import './auth.css'
 
 var validator = require('email-validator')
 
 type State = {
-    showThanksYouPage: false,
-    email: string,
-    lastNameValidation: boolean,
-    firstNameValidation: boolean,
-    emailValidation: boolean,
-    inputValidation2: boolean,
-    password: string,
-    firstName: string,
-    lastName: string,
-    isPasswordActiveStep: boolean,
-    activeStep: number,
-    maxStep: number,
+  showThanksYouPage: false,
+  email: string,
+  lastNameValidation: boolean,
+  firstNameValidation: boolean,
+  emailValidation: boolean,
+  inputValidation2: boolean,
+  password: string,
+  firstName: string,
+  lastName: string,
+  isPasswordActiveStep: boolean,
+  activeStep: number,
+  maxStep: number
 }
 
 type Props = {
@@ -49,31 +49,33 @@ class Signup extends React.Component<Props, State> {
     lastName: '',
     isPasswordActiveStep: false,
     activeStep: 0,
-    maxStep: 3,
+    maxStep: 3
   }
 
   lastNameRef: any
   emailRef: any
   input0: any
 
-  onChangePassword(statePasword){
+  onChangePassword(statePasword) {
     this.setState({
       password: statePasword.password,
       inputValidation2: statePasword.inputValidation2
     })
   }
 
-  onChangeEmail(e){
+  onChangeEmail(e) {
     this.setState({ email: e.target.value })
-    this.setState({emailValidation: this.validateEmail(e.target.value )})
+    this.setState({ emailValidation: this.validateEmail(e.target.value) })
   }
-  onChangeLastName(e){
+  onChangeLastName(e) {
     this.setState({ lastName: e.target.value })
-    this.setState({lastNameValidation: this.validateLastName(e.target.value )})
+    this.setState({ lastNameValidation: this.validateLastName(e.target.value) })
   }
-  onChangeFirstName(e){
+  onChangeFirstName(e) {
     this.setState({ firstName: e.target.value })
-    this.setState({firstNameValidation: this.validateFirstName(e.target.value )})
+    this.setState({
+      firstNameValidation: this.validateFirstName(e.target.value)
+    })
   }
   validateEmail(email) {
     return validator.validate(email)
@@ -86,176 +88,238 @@ class Signup extends React.Component<Props, State> {
   }
   calculateBuffer() {
     let data = ''
-    if(this.state.activeStep === 0) {
+    if (this.state.activeStep === 0) {
       data = this.state.firstName
     }
-    if(this.state.activeStep === 1) {
+    if (this.state.activeStep === 1) {
       data = this.state.lastName
     }
-    if(this.state.activeStep === 2) {
+    if (this.state.activeStep === 2) {
       data = this.state.email
     }
-    if(this.state.activeStep === 3) {
+    if (this.state.activeStep === 3) {
       data = this.state.password
     }
-    let maxValue = data.length/10 > 1 ? 1 : data.length/10
-    return (this.state.activeStep + maxValue) * 100 / this.state.maxStep
+    let maxValue = data.length / 10 > 1 ? 1 : data.length / 10
+    return ((this.state.activeStep + maxValue) * 100) / this.state.maxStep
   }
   handleNext = () => {
-    if(this.state.firstName) {
-      if(this.state.activeStep === 0 ) {
-        if(this.state.firstNameValidation ) {
-          this.setState({
-            activeStep: this.state.activeStep + 1,
-          }, () => {
-             this.lastNameRef.focus()
-          })
+    if (this.state.firstName) {
+      if (this.state.activeStep === 0) {
+        if (this.state.firstNameValidation) {
+          this.setState(
+            {
+              activeStep: this.state.activeStep + 1
+            },
+            () => {
+              this.lastNameRef.focus()
+            }
+          )
         }
       }
-      if(this.state.activeStep === 1 ) {
-        if(this.state.lastNameValidation ) {
-          this.setState({
-            activeStep: this.state.activeStep + 1,
-          }, () => {
-            this.emailRef.focus()
-            // this.setState({isPasswordActiveStep:true})
-          })
+      if (this.state.activeStep === 1) {
+        if (this.state.lastNameValidation) {
+          this.setState(
+            {
+              activeStep: this.state.activeStep + 1
+            },
+            () => {
+              this.emailRef.focus()
+              // this.setState({isPasswordActiveStep:true})
+            }
+          )
         }
       }
-      if(this.state.activeStep === 2 ) {
-        if(this.state.emailValidation ) {
-          this.setState({
-            activeStep: this.state.activeStep + 1,
-          }, () => {
-            // this.input2.focus()
-            this.setState({isPasswordActiveStep:true})
-          })
+      if (this.state.activeStep === 2) {
+        if (this.state.emailValidation) {
+          this.setState(
+            {
+              activeStep: this.state.activeStep + 1
+            },
+            () => {
+              // this.input2.focus()
+              this.setState({ isPasswordActiveStep: true })
+            }
+          )
         }
       }
-      if(this.state.activeStep === 3 ) {
-        if(this.state.inputValidation2 ) {
+      if (this.state.activeStep === 3) {
+        if (this.state.inputValidation2) {
           this._confirm()
         }
       }
     }
   }
 
-  handleKey = (data) => {
-    if(data.charCode === 13) {
+  handleKey = data => {
+    if (data.charCode === 13) {
       this.handleNext()
     }
   }
-  onFocusField = (field) => {
-    if(field === 'firstName') { this.setState({activeStep:0}) }
-    if(field === 'lastName') { this.setState({activeStep:1}) }
-    if(field === 'email') { this.setState({activeStep:2}) }
+  onFocusField = field => {
+    if (field === 'firstName') {
+      this.setState({ activeStep: 0 })
+    }
+    if (field === 'lastName') {
+      this.setState({ activeStep: 1 })
+    }
+    if (field === 'email') {
+      this.setState({ activeStep: 2 })
+    }
   }
 
   render() {
-    if(this.state.showThanksYouPage) {
-      return (<div>
-      <h1>THANKS YOU!</h1>
-      <h4>You can refresh page!</h4>
-      </div>
+    if (this.state.showThanksYouPage) {
+      return (
+        <div className="paperOut">
+          <Paper className="paperIn">
+            <h1>THANKS YOU!</h1>
+            <h4>You can refresh page!</h4>
+            <Button onClick={() => window.parent.location.reload()}>
+              Refresh Page
+            </Button>
+          </Paper>
+        </div>
       )
     }
     return (
-      <div className='paperOut'>
-        <Paper className='paperIn'>
-        <h4 className='mv3'>
-          Sign Up
-        </h4>
-        <div className='flex flex-column'>
-
-        <LinearProgress variant='buffer'
-          classes={{ 'dashedColorPrimary': 'dashedColorPrimaryLinearProgress' }}
-          value={this.state.activeStep * 100 / this.state.maxStep }
-          valueBuffer={this.calculateBuffer()} />
-          <br />
-            <div className='tac'>
-              <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 0 ? 'focusField' : 'notFocusField')}>
-                <InputLabel htmlFor='firstName'>First Name</InputLabel>
+      <div className="paperOut">
+        <Paper className="paperIn">
+          <h4 className="mv3">Sign Up</h4>
+          <div className="flex flex-column">
+            <LinearProgress
+              variant="buffer"
+              classes={{
+                dashedColorPrimary: 'dashedColorPrimaryLinearProgress'
+              }}
+              value={(this.state.activeStep * 100) / this.state.maxStep}
+              valueBuffer={this.calculateBuffer()}
+            />
+            <br />
+            <div className="tac">
+              <FormControl
+                className={
+                  'wrapperAnimate ' +
+                  (this.state.activeStep === 0 ? 'focusField' : 'notFocusField')
+                }
+              >
+                <InputLabel htmlFor="firstName">First Name</InputLabel>
                 <Input
-                  id='firstName'
+                  id="firstName"
                   error={!this.state.firstNameValidation}
                   value={this.state.firstName}
                   onFocus={() => this.onFocusField('firstName')}
-                  inputRef={node => this.input0 = node}
+                  inputRef={node => (this.input0 = node)}
                   onChange={this.onChangeFirstName.bind(this)}
-                  type='text'
+                  type="text"
                   onKeyPress={this.handleKey}
                 />
-            </FormControl>
-            {this.state.activeStep === 0 && (
-              <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                <Icon>navigate_next</Icon>
-              </Button>
-            )}
+              </FormControl>
+              {this.state.activeStep === 0 && (
+                <Button
+                  onClick={this.handleNext}
+                  variant="fab"
+                  color="primary"
+                  mini
+                >
+                  <Icon>navigate_next</Icon>
+                </Button>
+              )}
 
-            <br/><br/>
-            {this.state.activeStep >= 1 && (
-              <React.Fragment>
-                <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 1 ? 'focusField' : 'notFocusField')}>
-                  <InputLabel htmlFor='lastName'>Last name</InputLabel>
-                  <Input
-                    id='lastName'
-                    value={this.state.lastName}
-                    onFocus={() => this.onFocusField('lastName')}
-                    error={!this.state.lastNameValidation}
-                    onChange={this.onChangeLastName.bind(this)}
-                    type='text'
-                    inputRef={node => this.lastNameRef = node}
-                    onKeyPress={this.handleKey}
-                  />
-                </FormControl>
-                {this.state.activeStep === 1 && (
-                  <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                    <Icon>navigate_next</Icon>
-                  </Button>
-                )}
-              </React.Fragment>
-            )}
+              <br />
+              <br />
+              {this.state.activeStep >= 1 && (
+                <React.Fragment>
+                  <FormControl
+                    className={
+                      'wrapperAnimate ' +
+                      (this.state.activeStep === 1
+                        ? 'focusField'
+                        : 'notFocusField')
+                    }
+                  >
+                    <InputLabel htmlFor="lastName">Last name</InputLabel>
+                    <Input
+                      id="lastName"
+                      value={this.state.lastName}
+                      onFocus={() => this.onFocusField('lastName')}
+                      error={!this.state.lastNameValidation}
+                      onChange={this.onChangeLastName.bind(this)}
+                      type="text"
+                      inputRef={node => (this.lastNameRef = node)}
+                      onKeyPress={this.handleKey}
+                    />
+                  </FormControl>
+                  {this.state.activeStep === 1 && (
+                    <Button
+                      onClick={this.handleNext}
+                      variant="fab"
+                      color="primary"
+                      mini
+                    >
+                      <Icon>navigate_next</Icon>
+                    </Button>
+                  )}
+                </React.Fragment>
+              )}
 
-            <br/><br/>
-            {this.state.activeStep >= 2 && (
-              <React.Fragment>
-                <FormControl className={'wrapperAnimate ' + (this.state.activeStep === 2 ? 'focusField' : 'notFocusField')}>
-                  <InputLabel htmlFor='email'>Your email address</InputLabel>
-                  <Input
-                    id='email'
-                    value={this.state.email}
-                    onFocus={() => this.onFocusField('email')}
-                    error={!this.state.emailValidation}
-                    onChange={this.onChangeEmail.bind(this)}
-                    type='text'
-                    inputRef={node => this.emailRef = node}
-                    onKeyPress={this.handleKey}
-                  />
-                </FormControl>
-                {this.state.activeStep === 2 && (
-                  <Button onClick={this.handleNext} variant='fab' color='primary' mini>
-                    <Icon>navigate_next</Icon>
-                  </Button>
-                )}
-              </React.Fragment>
-            )}
-            <br/><br/>
-            {this.state.activeStep >= 3 && (
-              <Password
-                handleNext={this.handleNext.bind(this)}
-                activeStep={this.state.isPasswordActiveStep}
-                onChange2={this.onChangePassword.bind(this)}/>
-            )}
+              <br />
+              <br />
+              {this.state.activeStep >= 2 && (
+                <React.Fragment>
+                  <FormControl
+                    className={
+                      'wrapperAnimate ' +
+                      (this.state.activeStep === 2
+                        ? 'focusField'
+                        : 'notFocusField')
+                    }
+                  >
+                    <InputLabel htmlFor="email">Your email address</InputLabel>
+                    <Input
+                      id="email"
+                      value={this.state.email}
+                      onFocus={() => this.onFocusField('email')}
+                      error={!this.state.emailValidation}
+                      onChange={this.onChangeEmail.bind(this)}
+                      type="text"
+                      inputRef={node => (this.emailRef = node)}
+                      onKeyPress={this.handleKey}
+                    />
+                  </FormControl>
+                  {this.state.activeStep === 2 && (
+                    <Button
+                      onClick={this.handleNext}
+                      variant="fab"
+                      color="primary"
+                      mini
+                    >
+                      <Icon>navigate_next</Icon>
+                    </Button>
+                  )}
+                </React.Fragment>
+              )}
+              <br />
+              <br />
+              {this.state.activeStep >= 3 && (
+                <Password
+                  handleNext={this.handleNext.bind(this)}
+                  activeStep={this.state.isPasswordActiveStep}
+                  onChange2={this.onChangePassword.bind(this)}
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </Paper>
+        </Paper>
       </div>
     )
   }
 
   _confirm = async () => {
     const { firstName, email, password, lastName } = this.state
-    if(!password) { return }
+    if (!password) {
+      return
+    }
     let result
     try {
       result = await this.props.signupMutation({
@@ -264,40 +328,39 @@ class Signup extends React.Component<Props, State> {
           lastName,
           email,
           password
-        },
+        }
       })
     } catch (e) {
-      if(e.graphQLErrors.length) {
+      if (e.graphQLErrors.length) {
         this.props.openSnackBar(e.graphQLErrors[0].message)
       } else {
         this.props.openSnackBar('error')
       }
-      this.setState({activeStep: 0})
-      throw(e)
+      this.setState({ activeStep: 0 })
+      throw e
     }
     const { token, user } = result.data.signup
     this._saveUserData(token, user)
   }
 
   _saveUserData = async (token, user) => {
-    this.setState({showThanksYouPage: true})
+    this.setState({ showThanksYouPage: true })
     // localStorage.setItem(AUTH_TOKEN, token)
     // localStorage.setItem('userToken', JSON.stringify(user))
     // window.location.reload()
     // try {
     //   await this.props.refetchMe()
-      // this.props.history.push(`/`)
+    // this.props.history.push(`/`)
     //   this.props.openSnackBar('Sign In successful!')
     // } catch (e) {
-    //   console.log(e)   
-    // }   
+    //   console.log(e)
+    // }
   }
 }
 
 export default compose(
   withApollo,
   withContext,
-  graphql(ME_QUERY_ROLE, {name: 'me'}),
-  graphql(SIGNUP_MUTATION, { name: 'signupMutation' }),
-
+  graphql(ME_QUERY_ROLE, { name: 'me' }),
+  graphql(SIGNUP_MUTATION, { name: 'signupMutation' })
 )(Signup)
