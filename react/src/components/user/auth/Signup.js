@@ -18,6 +18,7 @@ import './auth.css'
 var validator = require('email-validator')
 
 type State = {
+    showThanksYouPage: false,
     email: string,
     lastNameValidation: boolean,
     firstNameValidation: boolean,
@@ -151,6 +152,13 @@ class Signup extends React.Component<Props, State> {
   }
 
   render() {
+    if(this.state.showThanksYouPage) {
+      return (<div>
+      <h1>THANKS YOU!</h1>
+      <h4>You can refresh page!</h4>
+      </div>
+      )
+    }
     return (
       <div className='paperOut'>
         <Paper className='paperIn'>
@@ -272,12 +280,13 @@ class Signup extends React.Component<Props, State> {
   }
 
   _saveUserData = async (token, user) => {
-    localStorage.setItem(AUTH_TOKEN, token)
-    localStorage.setItem('userToken', JSON.stringify(user))
-    window.location.reload()
+    this.setState({showThanksYouPage: true})
+    // localStorage.setItem(AUTH_TOKEN, token)
+    // localStorage.setItem('userToken', JSON.stringify(user))
+    // window.location.reload()
     // try {
     //   await this.props.refetchMe()
-    //   this.props.history.push(`/`)
+      // this.props.history.push(`/`)
     //   this.props.openSnackBar('Sign In successful!')
     // } catch (e) {
     //   console.log(e)   
