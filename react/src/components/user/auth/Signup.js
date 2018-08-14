@@ -302,11 +302,16 @@ class Signup extends React.Component<Props, State> {
               <br />
               <br />
               {this.state.activeStep >= 3 && (
-                <Password
-                  handleNext={this.handleNext.bind(this)}
-                  activeStep={this.state.isPasswordActiveStep}
-                  onChange2={this.onChangePassword.bind(this)}
-                />
+                <React.Fragment>
+
+                  Request is sent to NachoNacho via POST API to check if token is correct, berfore create user.
+                  <Password
+                    handleNext={this.handleNext.bind(this)}
+                    activeStep={this.state.isPasswordActiveStep}
+                    onChange2={this.onChangePassword.bind(this)}
+                  />
+
+                </React.Fragment>
               )}
             </div>
           </div>
